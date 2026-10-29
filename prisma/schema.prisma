@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENTE
+  ATENDENTE
+  COZINHA
+  GERENTE
+  ADMIN
+}
+
+enum MovementType {
+  ENTRADA
+  SAIDA
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(CLIENTE)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  movements    StockMovement[]
+}
+
+model Product {
+  id          String   @id @default(uuid()) @db.Uuid
+  sku         String   @unique
+  name        String
+  description String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  balances    StockBalance[]
+  movements   StockMovement[]
+}
+
+model Unit {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  balances  StockBalance[]
+  movements StockMovement[]
+}
+
+model StockBalance {
+  id        String   @id @default(uuid()) @db.Uuid
+  productId String   @db.Uuid
+  unitId    String   @db.Uuid
+  quantity  Int      @default(0)
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Restrict)
+
+  @@unique([productId, unitId])
+  @@index([unitId])
+}
+
+model StockMovement {
+  id          String       @id @default(uuid()) @db.Uuid
+  productId   String       @db.Uuid
+  unitId      String       @db.Uuid
+  userId      String       @db.Uuid
+  type        MovementType
+  quantity    Int
+  balanceAfter Int
+  reason      String?
+  createdAt   DateTime     @default(now())
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+  unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([productId, unitId, createdAt])
+  @@index([createdAt])
+}
