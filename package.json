@@ -37,11 +37,16 @@
     "@nestjs/testing": "^11.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.13.0",
     "@types/passport-jwt": "^4.0.1",
+    "jest": "^30.5.2",
     "prisma": "^6.19.0",
+    "ts-jest": "^29.4.15",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3"
   },
-  "prisma": { "seed": "tsx prisma/seed.ts" }
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
 }
