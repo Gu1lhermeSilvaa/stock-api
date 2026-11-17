@@ -1,0 +1,38 @@
+erDiagram
+  User ||--o{ StockMovement : registra
+  Product ||--o{ StockBalance : possui
+  Unit ||--o{ StockBalance : mantem
+  Product ||--o{ StockMovement : movimenta
+  Unit ||--o{ StockMovement : ocorre_em
+  User { string id PK
+         string name
+         string email UK
+         string passwordHash
+         Role role
+         boolean active }
+  Product { string id PK
+            string sku UK
+            string name
+            string description
+            boolean active
+            datetime createdAt
+            datetime updatedAt }
+  Unit { string id PK
+         string code UK
+         string name
+         boolean active
+         datetime createdAt }
+  StockBalance { string id PK
+                 string productId FK
+                 string unitId FK
+                 int quantity
+                 datetime updatedAt }
+  StockMovement { string id PK
+                  string productId FK
+                  string unitId FK
+                  string userId FK
+                  MovementType type
+                  int quantity
+                  int balanceAfter
+                  string reason
+                  datetime createdAt }

@@ -70,3 +70,31 @@ O saldo após entrada de 100 e saída de 15 deve ser 85. Saídas maiores que o s
 - O middleware de validação rejeita campos desconhecidos e entradas inválidas.
 - `CLIENTE`, `ATENDENTE`, `COZINHA`, `GERENTE` e `ADMIN` são os perfis definidos. Cadastro público de usuário não está habilitado; os usuários são provisionados pelo seed ou por processo administrativo confiável.
 - Em um ambiente real, use segredos seguros, TLS, política de backup, monitoramento, rate limiting e testes automatizados.
+
+
+## Rodar testes
+
+```bash
+npm test
+```
+
+Os testes unitários (Jest) cobrem as regras de estoque: entrada, saída, saldo insuficiente, conflito de concorrência e paginação.
+
+## Documentação e entregáveis
+
+- Swagger interativo: http://localhost:3000/docs
+- Especificação OpenAPI: [docs/openapi.json](docs/openapi.json)
+- Coleção Postman/Insomnia: [docs/postman_collection.json](docs/postman_collection.json)
+- DER: [docs/der.png](docs/der.png) (fonte Mermaid em [docs/der.mmd](docs/der.mmd))
+
+## Evidências
+
+| Evidência | Imagem |
+|---|---|
+| Login do administrador (201 + JWT) | ![Login](docs/evidencias/01-login-201.png) |
+| SKU duplicado recusado (409) | ![409](docs/evidencias/02-sku-duplicado-409.png) |
+| Listagem de produtos (200) | ![Produtos](docs/evidencias/03-listar-produtos-200.png) |
+| Listagem de unidades (200) | ![Unidades](docs/evidencias/04-listar-unidades-200.png) |
+| Entrada de estoque (201) | ![Entrada](docs/evidencias/05-entrada-estoque-201.png) |
+| Saldo por produto e unidade (200) | ![Saldo](docs/evidencias/06-saldo-consultado-200.png) |
+| Testes unitários (10 aprovados) | ![Testes](docs/evidencias/07-testes-10-passed.png) |
